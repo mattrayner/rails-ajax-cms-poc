@@ -1,0 +1,128 @@
+// Place all the behaviors and hooks related to the matching controller here.
+// All this logic will automatically be available in application.js.
+// You can use CoffeeScript in this file: http://coffeescript.org/
+
+$(document).ready(function(){
+  // Process show form buttons
+  showFormButtonClicked = function(e){ 
+    e.preventDefault();
+
+    // Hide check for showable things
+    id = $(this).prop("id");
+
+    id = "#"+id.substring( id.indexOf("_")+1 )+"-form";
+
+    if ($(id).size() > 0) {
+      $(id).removeClass( "hide");
+      $(this).addClass( "hide");
+    }
+  }
+
+  // Process form button clicks
+  formButtonClicked = function (e) {
+    e.preventDefault();
+
+    console.log("here");
+
+    id = $(this).prop("id");
+    id = id.substring( id.indexOf("_")+1 );
+
+    submitForm(id, true);
+  }
+
+  // Do some AJAX magic
+  submitForm = function (type, new_item, id) {
+    if (new_item == null)
+      new_item = false;
+
+    if (id == null)
+      id = 0;
+
+    data = null;
+
+    // Get the CSRF token
+    tokenParam = $('meta[name=csrf-param]').attr("content");
+    token = $('meta[name=csrf-token]').attr("content");
+
+    console.log("got here");
+
+    if (type == "category") {
+      data = {tokenParam: token, category:{name: $("#category-form #name").val(), description: $("#category-form #description").val()}};
+    }
+    else if (type == "business") {
+      data = {tokenParam: token, business:{name: $().val(), tasks: $().val()}};
+    }
+    else if (type == "task") {
+      data = {tokenParam: token, task:{title: $().val, description: $().val, duration: $().val, priority: $().val, category_id:  $().val}};
+    }
+
+    if (data == null) {
+      alert ("There was an error submitting your form");
+      return;
+    }else{
+
+      if (type == "category") {
+        api_target = "categories";
+      }
+      else if (type == "business") {
+        api_target = "businesses";
+      }
+      else if (type == "task") {
+        api_target = "tasks";
+      }
+
+      if (!new_item) {
+        api_target += "/"+id ;
+      }
+
+      console.log(api_target);
+      console.log(data);
+
+      // Do the AJAX
+      request = $.ajax({
+        type: "POST",
+        url: "http://0.0.0.0:3000/api/v1/"+api_target,
+        data: data
+      });
+
+      request.done = function(msg){
+        alert( "Data Saved: " + msg );
+      }
+
+      request.error = function(msg){
+        alert( "Error: " + msg );
+      }
+    }
+  }
+
+
+  /* Refresh functions
+  refeshCategories = ->
+    # Get with AJAX
+
+    # Create a HTML table containing each
+
+    # Print the table out
+
+  refreshBusinesses = ->
+    # Get with AJAX
+
+    # Create a HTML table containing each
+
+    # Print the table out
+
+  refreshTasks = ->
+    # Get with AJAX
+
+    # Create a HTML table containing each
+
+    # Print the table out*/
+
+  // Click the show buttons
+  $('#show_category').on( "click", showFormButtonClicked);
+  $('#show_business').on( "click", showFormButtonClicked);
+
+  // Click the submit buttons
+  $('#submit_category').on( "click", formButtonClicked);
+  $('#submit_business').on( "click", formButtonClicked);
+});

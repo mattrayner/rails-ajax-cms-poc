@@ -1,0 +1,81 @@
+.container
+  .row
+    .jumbotron
+      %h1 Choose your business to get started:
+      .form-group
+        = label_tag 'business_select', "Category:"
+        = select_tag 'business_select', "<option>Loading...</option>".html_safe, class: "form-control"
+      %a.btn.btn-primary.btn-lg.pull-right#select_business{href: "#"} Choose Business
+      %hr
+      #business_tasks
+    %hr
+    %h1 Configure the businesses etc.
+    .col-sm-5#categories
+      %h2 Categories
+      %p
+        All of the tasks are split into categories:
+      %a.btn.btn-primary.pull-right#show_category{href:"#"} Add Category
+      .clearfix
+
+      #category-form.well.hide
+        %h3 Add Category
+        .form-group
+          = label_tag 'name', "Name:"
+          = text_field_tag 'name', nil, placeholder: 'Some category', class: "form-control"
+        .form-group
+          = label_tag 'description', "Description:"
+          = text_area_tag 'description', nil, placeholder: 'Give your category a description', class: "form-control"
+        %a.btn.btn-success.pull-right#submit_category{href:"#lol"} Save
+        %a.btn.btn-default.pull-left#cancel_category{href:"#"} Cancel
+        .clearfix
+      %hr
+      #category_container
+    .col-sm-5.col-sm-offset-2#businesses
+      %h2 Businesses
+      %p
+        All of the tasks can be added to many businesses:
+      %a.btn.btn-primary.pull-right#show_business{href:"#"} Add Business
+      .clearfix
+
+      #business-form.well.hide
+        %h3 Add Business
+        .form-group
+          = label_tag 'name', "Name:"
+          = text_field_tag 'name', nil, placeholder: 'Some business', class: "form-control"
+        .form-group
+          = label_tag 'tasks', "Tasks related to business:"
+          = select_tag 'tasks', "<option>Loading...</option>".html_safe, multiple: true, class: "form-control"
+        %a.btn.btn-success.pull-right#submit_business{href:"#"} Save
+        %a.btn.btn-default.pull-left#cancel_business{href:"#"} Cancel
+        .clearfix
+      %hr
+      #business_container
+  .row
+    .col-sm-12#tasks
+      %h2 Tasks
+      %p The individual actions are broken down into tasks
+      %a.btn.btn-primary.pull-right#show_task{href:"#"} Add Task
+      .clearfix
+
+      #task-form.well.hide
+        %h3 Add Task
+        .form-group
+          = label_tag 'title', "Name:"
+          = text_field_tag 'title', nil, placeholder: 'Some task', class: "form-control"
+        .form-group
+          = label_tag 'description', "Description:"
+          = text_area_tag 'description', nil, placeholder: 'Give your category a description', class: "form-control"
+        .form-group
+          = label_tag 'duration', "Duration:"
+          = text_field_tag 'duration', nil, placeholder: '1d', class: "form-control"
+        .form-group
+          = label_tag 'priority', "Priority:"
+          = text_field_tag 'priority', nil, placeholder: '0', class: "form-control"
+        .form-group
+          = label_tag 'category_id', "Category:"
+          = select_tag 'category_id', "<option>Loading...</option>".html_safe, class: "form-control"
+        %a.btn.btn-success.pull-right#submit_task{href:"#"} Save
+        %a.btn.btn-default.pull-left#cancel_task{href:"#"} Cancel
+        .clearfix
+      %hr
+      #task_container
